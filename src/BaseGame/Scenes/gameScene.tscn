@@ -1,0 +1,139 @@
+[gd_scene load_steps=13 format=3 uid="uid://btys28vuco0dh"]
+
+[ext_resource type="Texture2D" uid="uid://bm3eqthxipsyy" path="res://BaseGame/Images/BG.png" id="1_ln1af"]
+[ext_resource type="Script" uid="uid://p3i667anulvw" path="res://BaseGame/Script/gameScene.gd" id="1_sxpjc"]
+[ext_resource type="Script" uid="uid://bqg7jmoqgpa0k" path="res://BaseGame/Script/player.gd" id="3_4xxat"]
+[ext_resource type="FontFile" uid="uid://ck8bqunjih1en" path="res://BaseGame/Font/adventure-atari-2600.otf" id="3_sxpjc"]
+[ext_resource type="Script" uid="uid://dtcic5mjk1q7i" path="res://BaseGame/Script/cpu.gd" id="4_3vsac"]
+[ext_resource type="Script" uid="uid://dl2sdly4rbnog" path="res://BaseGame/Script/ball.gd" id="4_5dt34"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2t5wk"]
+bg_color = Color(0.5799406, 0.26751903, 0.97007793, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ln1af"]
+size = Vector2(40, 40)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ln1af"]
+bg_color = Color(0.45871672, 0.07034409, 0.83535516, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2t5wk"]
+size = Vector2(40, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sxpjc"]
+size = Vector2(1564, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4xxat"]
+size = Vector2(31, 900)
+
+[node name="gameScene" type="Node2D"]
+script = ExtResource("1_sxpjc")
+
+[node name="Bg" type="Sprite2D" parent="."]
+position = Vector2(800.00006, 450)
+scale = Vector2(0.9999998, 1)
+texture = ExtResource("1_ln1af")
+metadata/_edit_lock_ = true
+
+[node name="playerScore" type="Label" parent="."]
+offset_left = 516.0
+offset_top = 98.0
+offset_right = 643.0
+offset_bottom = 250.0
+theme_override_colors/font_color = Color(0.74767596, 0.381901, 0.94193447, 1)
+theme_override_fonts/font = ExtResource("3_sxpjc")
+theme_override_font_sizes/font_size = 133
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="cpuScore" type="Label" parent="."]
+offset_left = 967.0
+offset_top = 98.0
+offset_right = 1094.0
+offset_bottom = 250.0
+theme_override_colors/font_color = Color(0.7490196, 0.38039216, 0.9411765, 1)
+theme_override_fonts/font = ExtResource("3_sxpjc")
+theme_override_font_sizes/font_size = 133
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ball" type="CharacterBody2D" parent="."]
+position = Vector2(797, 451)
+collision_mask = 3
+script = ExtResource("4_5dt34")
+
+[node name="Panel" type="Panel" parent="ball"]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 19.900002
+offset_bottom = 20.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2t5wk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ball"]
+shape = SubResource("RectangleShape2D_ln1af")
+
+[node name="player" type="Area2D" parent="."]
+position = Vector2(53, 450)
+script = ExtResource("3_4xxat")
+
+[node name="Panel" type="Panel" parent="player"]
+offset_left = -16.0
+offset_top = -55.0
+offset_right = 24.0
+offset_bottom = 57.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ln1af")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player"]
+position = Vector2(5, 1)
+shape = SubResource("RectangleShape2D_2t5wk")
+
+[node name="cpu" type="Area2D" parent="."]
+position = Vector2(1555, 450)
+script = ExtResource("4_3vsac")
+
+[node name="Panel" type="Panel" parent="cpu"]
+offset_left = -20.0
+offset_top = -55.0
+offset_right = 20.0
+offset_bottom = 57.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ln1af")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cpu"]
+position = Vector2(-1, 1)
+shape = SubResource("RectangleShape2D_2t5wk")
+
+[node name="border_top" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="top" type="CollisionShape2D" parent="border_top"]
+position = Vector2(797, 52)
+shape = SubResource("RectangleShape2D_sxpjc")
+
+[node name="border_bottom" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="bottom" type="CollisionShape2D" parent="border_bottom"]
+position = Vector2(797, 850)
+shape = SubResource("RectangleShape2D_sxpjc")
+
+[node name="leftExitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leftExitArea"]
+position = Vector2(-15.5, 450)
+shape = SubResource("RectangleShape2D_4xxat")
+
+[node name="rightExitArea" type="Area2D" parent="."]
+position = Vector2(1631, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rightExitArea"]
+position = Vector2(-15.5, 450)
+shape = SubResource("RectangleShape2D_4xxat")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(22.08, 837)
+
+[connection signal="body_entered" from="player" to="." method="_on_player_body_entered"]
+[connection signal="body_entered" from="cpu" to="." method="_on_cpu_body_entered"]
+[connection signal="body_entered" from="border_top" to="." method="_on_border_top_body_entered"]
+[connection signal="body_entered" from="border_bottom" to="." method="_on_border_bottom_body_entered"]
+[connection signal="body_entered" from="leftExitArea" to="." method="_on_left_exit_area_body_entered"]
+[connection signal="body_entered" from="rightExitArea" to="." method="_on_right_exit_area_body_entered"]
